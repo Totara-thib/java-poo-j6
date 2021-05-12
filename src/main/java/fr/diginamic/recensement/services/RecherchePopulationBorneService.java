@@ -22,6 +22,7 @@ public class RecherchePopulationBorneService extends MenuService {
 	public void traiter(Recensement rec, Scanner scanner) throws ReflectionException {
 
 
+		List<Ville> villes = rec.getVilles();
 		System.out.println("Quel est le code du département recherché ? ");
 		String choix = scanner.nextLine();
 		System.out.println("Choississez une population minimum (en milliers d'habitants): ");
@@ -43,17 +44,19 @@ public class RecherchePopulationBorneService extends MenuService {
 
 				int min = Integer.parseInt(saisieMin) * 1000;
 				int max = Integer.parseInt(saisieMax) * 1000;
-				List<Ville> villes = rec.getVilles();
+				boolean checker = false;
 				for (Ville ville : villes) {
 					if (ville.getCodeDepartement().equalsIgnoreCase(choix)) {
 						
 						if (ville.getPopulation() >= min && ville.getPopulation() <= max) {
+							checker = true;
 							System.out.println(ville);
 						}
 						
-					} else {
-						throw new ReflectionException("Le département renseigné n'existe pas");
-					}
+					} 
+				}
+				if (checker == false) {
+					throw new ReflectionException("Le département renseigné n'existe pas");
 				}
 			}
 		}

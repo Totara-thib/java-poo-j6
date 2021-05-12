@@ -23,14 +23,17 @@ public class RecherchePopulationRegionService extends MenuService {
 		List<Ville> villes = rec.getVilles();
 		int somme = 0;
 		String nom = null;
+		boolean checker = false;
 		for (Ville ville : villes) {
 			if (ville.getNomRegion().toLowerCase().equals(choix.toLowerCase())
 					|| ville.getCodeRegion().toLowerCase().equals(choix.toLowerCase())) {
 				somme += ville.getPopulation();
 				nom = ville.getNomRegion();
-			} else {
-				throw new ReflectionException("La région renseigné n'existe pas");
-			}
+				checker = true;
+			} 
+		}
+		if (checker == false) {
+			throw new ReflectionException("La région renseigné n'existe pas");
 		}
 		if (somme > 0) {
 			System.out.println("Population de la région " + nom + " : " + somme);

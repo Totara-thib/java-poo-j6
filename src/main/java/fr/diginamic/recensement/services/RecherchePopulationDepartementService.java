@@ -26,12 +26,15 @@ public class RecherchePopulationDepartementService extends MenuService {
 		
 		List<Ville> villes = rec.getVilles();
 		int somme = 0;
+		boolean checker = false;
 		for (Ville ville: villes){
 			if (ville.getCodeDepartement().equalsIgnoreCase(choix)){
 				somme+=ville.getPopulation();
-			} else {
-				throw new ReflectionException("Le département renseigné n'existe pas");
-			}
+				checker = true;
+			} 
+		}
+		if (checker == false) {
+			throw new ReflectionException("Le département renseigné n'existe pas");
 		}
 		if (somme>0){
 			System.out.println("Population du département "+choix+" : "+ somme);

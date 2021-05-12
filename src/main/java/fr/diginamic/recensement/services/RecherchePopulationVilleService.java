@@ -21,13 +21,16 @@ public class RecherchePopulationVilleService extends MenuService {
 		String choix = scanner.nextLine();
 
 		List<Ville> villes = rec.getVilles();
+		boolean checker = false;
 		for (Ville ville : villes) {
 			if (ville.getNom().equalsIgnoreCase(choix)
 					|| ville.getNom().toLowerCase().startsWith(choix.toLowerCase())) {
 				System.out.println(ville);
-			} else {
-				throw new ReflectionException("La ville renseigné n'existe pas");
-			}
+				checker = true;
+			} 
+		}
+		if (checker == false) {
+			throw new ReflectionException("La ville renseignée n'existe pas");
 		}
 	}
 
