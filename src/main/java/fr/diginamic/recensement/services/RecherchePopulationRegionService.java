@@ -15,7 +15,7 @@ import fr.diginamic.recensement.entites.Ville;
 public class RecherchePopulationRegionService extends MenuService {
 
 	@Override
-	public void traiter(Recensement rec, Scanner scanner) {
+	public void traiter(Recensement rec, Scanner scanner) throws ReflectionException {
 
 		System.out.println("Quel est le nom (ou le début de nom) de la région recherchée ? ");
 		String choix = scanner.nextLine();
@@ -28,6 +28,8 @@ public class RecherchePopulationRegionService extends MenuService {
 					|| ville.getCodeRegion().toLowerCase().equals(choix.toLowerCase())) {
 				somme += ville.getPopulation();
 				nom = ville.getNomRegion();
+			} else {
+				throw new ReflectionException("La région renseigné n'existe pas");
 			}
 		}
 		if (somme > 0) {

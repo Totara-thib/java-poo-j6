@@ -15,7 +15,7 @@ import fr.diginamic.recensement.entites.Ville;
 public class RecherchePopulationDepartementService extends MenuService {
 
 	@Override
-	public void traiter(Recensement rec, Scanner scanner) {
+	public void traiter(Recensement rec, Scanner scanner) throws ReflectionException {
 		
 		System.out.println("Quel est le code du département recherché ? ");
 		String choix = scanner.nextLine();
@@ -29,6 +29,8 @@ public class RecherchePopulationDepartementService extends MenuService {
 		for (Ville ville: villes){
 			if (ville.getCodeDepartement().equalsIgnoreCase(choix)){
 				somme+=ville.getPopulation();
+			} else {
+				throw new ReflectionException("Le département renseigné n'existe pas");
 			}
 		}
 		if (somme>0){

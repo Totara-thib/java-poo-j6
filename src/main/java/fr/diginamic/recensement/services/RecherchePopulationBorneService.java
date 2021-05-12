@@ -3,6 +3,8 @@ package fr.diginamic.recensement.services;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import fr.diginamic.recensement.entites.Recensement;
 import fr.diginamic.recensement.entites.Ville;
 
@@ -17,25 +19,41 @@ import fr.diginamic.recensement.entites.Ville;
 public class RecherchePopulationBorneService extends MenuService {
 
 	@Override
-	public void traiter(Recensement rec, Scanner scanner) {
+	public void traiter(Recensement rec, Scanner scanner) throws ReflectionException {
+
 
 		System.out.println("Quel est le code du département recherché ? ");
 		String choix = scanner.nextLine();
-
 		System.out.println("Choississez une population minimum (en milliers d'habitants): ");
 		String saisieMin = scanner.nextLine();
-		
-		System.out.println("Choississez une population maximum (en milliers d'habitants): ");
-		String saisieMax = scanner.nextLine();
+		if (!NumberUtils.isDigits(saisieMin)) {
+			throw new ReflectionException("Vous devez renseigner un chiffre");
+		} else if (Integer.parseInt(saisieMin) < 0) {
+			throw new ReflectionException("Le chiffre doit être supérieur à 0");
+		} else {
+			System.out.println("Choississez une population maximum (en milliers d'habitants): ");
+			String saisieMax = scanner.nextLine();
+			if (!NumberUtils.isDigits(saisieMax)) {
+				throw new ReflectionException("Vous devez renseigner un chiffre");
+			} else if (Integer.parseInt(saisieMax) < 0) {
+				throw new ReflectionException("Le chiffre doit être supérieur à 0");
+			} else if (Integer.parseInt(saisieMin) > Integer.parseInt(saisieMax)) {
+				throw new ReflectionException("Le chiffre max doit être supérieur au chiffre min");
+			} else {
 
-		int min = Integer.parseInt(saisieMin) * 1000;
-		int max = Integer.parseInt(saisieMax) * 1000;
-		
-		List<Ville> villes = rec.getVilles();
-		for (Ville ville : villes) {
-			if (ville.getCodeDepartement().equalsIgnoreCase(choix)) {
-				if (ville.getPopulation() >= min && ville.getPopulation() <= max) {
-					System.out.println(ville);
+				int min = Integer.parseInt(saisieMin) * 1000;
+				int max = Integer.parseInt(saisieMax) * 1000;
+				List<Ville> villes = rec.getVilles();
+				for (Ville ville : villes) {
+					if (ville.getCodeDepartement().equalsIgnoreCase(choix)) {
+						
+						if (ville.getPopulation() >= min && ville.getPopulation() <= max) {
+							System.out.println(ville);
+						}
+						
+					} else {
+						throw new ReflectionException("Le département renseigné n'existe pas");
+					}
 				}
 			}
 		}
